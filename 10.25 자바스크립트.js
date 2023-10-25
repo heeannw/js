@@ -46,3 +46,18 @@ const fruits2 = ['🍐','🥥'];
 const newFruits = fruits.concat(fruits2);
 console.log(newFruits);
 
+//2.Searching
+//find the indrx
+console.log(fruits);
+console.log(fruits.indexof('🍎'));
+console.log(fruits.indexof('🍉'));
+console.log(fruits.indexof('🥥'));
+
+//includes
+console.log(fruits.includes('🍉'));
+console.log(fruits.includes('🥥'));
+
+//lastIndexof
+fruits.push('🍎');
+console.log(fruits);
+console.log(fruits.indexof('🍎'));
