@@ -28,13 +28,19 @@
         }
 
         .header-title {
-            position: absolute;
-            width: 200px; height:  40px;
-            left: 50%; margin-left: -100px;
-            background: url('logo.png');
-            background-repeat: no-repeat;
-
-            text-indent: -9999px;
+        /* 이전 스타일에서 변경된 부분 */
+        position: absolute;
+        width: 200px;
+        height: 40px;
+        left: 50%;
+        margin-left: -100px;
+        background: url('logo.png');
+        background-repeat: no-repeat;
+        text-indent: 0;
+        overflow: hidden;
+        }
+        h1 {
+            color: pink; /* 또는 다른 원하는 색상 */
         }
 
         .header-menu {
@@ -87,14 +93,15 @@
         }
 
         #main-navigation > ul {
-            overflow:hidden;
-            text-align: center;
+            display: flex; /* Flexbox를 사용해서 가로로 배열하도록 설정 */
+            justify-content: space-around; /* 항목들을 가로로 고르게 배치 */
+            padding: 0; /* 좌우 여백 제거 */
         }
 
         #main-navigation > ul > li {
-            display: inline;
-
-            padding: 0 5px;
+         /* 기존 스타일 */
+            margin: 0;
+            padding: 0; /* 좌우 여백을 없애기 위해 padding을 0으로 변경 */
 
             line-height: 30px;
             font-size: 13px;
@@ -102,7 +109,7 @@
             text-shadow: 0 1px 1px white;
         }
 
-        #main-navigation > ul > li:hover { 
+        #main-navigation > ul > li:hover {
             background: #E1DFDF;
             border-radius: 2px;
         }
@@ -176,7 +183,7 @@
 
         .paper-link {
             display: block;
-            float: left;
+            
         }
 
         .paper-text {
