@@ -7,69 +7,89 @@
             border: 1px solid black;
         }
     </style>
-    <script src="jquer-3.6.0.min.js"></script>
-    <script src="/socket.io/socket.io.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.3.2/socket.io.js"></script>
+
     <script>
         $(document).ready(function () {
-            //변수를 선언합니다.
             let color = 'black';
             let width = 1;
             let isDown = false;
             let newPoint, oldPoint;
-            //소켓을 연결합니다.
-            const socket = io.connect();
-            //캔버스를 추출합니다.
+
+            const socket = io();
+
+            socket.on('connect_error', (error) => {
+                console.error('Socket connection error:', error);
+            });
+
             const canvas = document.getElementById('canvas');
             const context = canvas.getContext('2d');
-            //마우스 이벤트를 연결합니다.
+
             $(canvas).mousedown(function (event) {
                 isDown = true;
                 oldPoint = {
-                    x: event.pageX - $(this).position().left,
-                    y: event.pageY - $(this).position().top
+                    x: event.pageX - $(this).offset().left,
+                    y: event.pageY - $(this).offset().top
                 };
             });
+
             $(canvas).mousemove(function (event) {
-                if (!isDown) {return;}
+                if (!isDown) { return; }
+
                 newPoint = {
-                    x: event.pageX - $(this).position().left,
-                    y: event.pageY - $(this).position().top
+                    x: event.pageX - $(this).offset().left,
+                    y: event.pageY - $(this).offset().top
                 };
+
                 socket.emit('line', {
                     x1: oldPoint.x,
                     y1: oldPoint.y,
-                    x2: oldPoint.x,
-                    y2: oldPoint.y,
+                    x2: newPoint.x,
+                    y2: newPoint.y,
                     color: color,
                     width: width
                 });
+
+                context.beginPath();
+                context.lineWidth = width;
+                context.lineCap = 'round';
+                context.strokeStyle = color;
+                context.moveTo(oldPoint.x, oldPoint.y);
+                context.lineTo(newPoint.x, newPoint.y);
+                context.stroke();
+
                 oldPoint = newPoint;
             });
+
             $(canvas).mouseup(function (event) {
                 isDown = false;
                 oldPoint = {
-                    x: event.pageX - $(this).position().left,
-                    y: event.pageY - $(this).position().top
+                    x: event.pageX - $(this).offset().left,
+                    y: event.pageY - $(this).offset().top
                 };
             });
-            //입력 양식 이벤트를 연결합니다.
+
             $('#pen').click(function () {
                 width = 1;
-                color + 'black';
+                color = 'black';
                 $('#width').val(width);
             });
+
             $('#eraser').click(function () {
                 width = 10;
                 color = 'white';
                 $('#width').val(width);
             });
+
             $('#width').change(function () {
-                width = $(this).val()
+                width = $(this).val();
             });
-            //소켓 이벤트를 연결합니다.
+
             socket.on('line', function (data) {
                 context.beginPath();
                 context.lineWidth = data.width;
+                context.lineCap = 'round';
                 context.strokeStyle = data.color;
                 context.moveTo(data.x1, data.y1);
                 context.lineTo(data.x2, data.y2);
@@ -79,10 +99,10 @@
     </script>
 </head>
 <body>
-    <button id = "pen">펜</button>
-    <button id = "eraser">지우개</button>
-    <input id = "width" type="range" min="1" max="10" value="1" />
-    <br  />
+    <button id="pen">펜</button>
+    <button id="eraser">지우개</button>
+    <input id="width" type="range" min="1" max="10" value="1" />
+    <br />
     <canvas id="canvas" width="1000" height="600"></canvas>
 </body>
 </html>
