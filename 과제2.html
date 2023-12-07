@@ -194,6 +194,26 @@
     </style>
     <!-- 섹션 -->
     <style>
+        #main-section {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            margin: 0 auto;
+        }
+
+        .paper {
+            width: calc(33.33% - 20px);
+            margin-bottom: 20px;
+            box-sizing: border-box;
+        }
+
+        @media (max-width: 767px) {
+            .paper {
+                width: 100%;
+            }
+        }
+    </style>
+    <style>
         /* 미디어 쿼리를 지원하지 않는 웹 브라우저 */
         #main-section {
             width: 920px;
